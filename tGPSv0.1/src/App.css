@@ -1,0 +1,44 @@
+@import 'leaflet/dist/leaflet.css';
+
+.main {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  background-color: #2b2a33; /* Changed to a dark background color */
+  color: #ffffff; /* Changed to white text color */
+  height: 100vh;
+}
+
+.card {
+  min-height: 50vh;
+  width: 50vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #3c3b42; /* Changed to a darker background color */
+  color: #ffffff; /* Changed to white text color */
+  border-radius: 8px; /* Optional: Add some border-radius to the card */
+}
+
+.form {
+  height: 20vh;
+  width: 20vw;
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+}
+
+.button {
+  width: 20vw;
+  height: 5vh;
+  background-color: #4a494e; /* Changed to a darker background color */
+  color: #ffffff; /* Changed to white text color */
+  border: none; /* Remove the default border */
+  cursor: pointer; /* Add cursor pointer */
+  border-radius: 4px; /* Optional: Add some border-radius to the button */
+}
+
+.button:hover {
+  background-color: #5a5960; /* Optional: Add a hover effect to the button */
+}
