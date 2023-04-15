@@ -1,6 +1,6 @@
 Please refer to:
 
-TokenizedGPS folder is true frontend,
+verified-gps folder is true frontend,
  others are just to be ignored that it is just things during practicing.
 
 What this project is:
