@@ -1,0 +1,26 @@
+{
+  "name": "verified-gps",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel serve index.html",
+    "build": "parcel build index.html"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@safe-global/api-kit": "^1.0.1",
+    "@safe-global/protocol-kit": "^0.1.1",
+    "@safe-global/safe-core-sdk-types": "^1.10.1",
+    "ethers": "^6.3.0",
+    "web3": "^1.9.0"
+  },
+  "devDependencies": {
+    "assert": "^2.0.0",
+    "events": "^3.3.0",
+    "parcel": "^2.8.3",
+    "stream-browserify": "^3.0.0"
+  }
+}
