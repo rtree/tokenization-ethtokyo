@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { TGPS } from "./abi/abi";
 import Web3 from "web3";
+import { TGPS } from "./abi/abi";
 import './App.css';
+
 
 const web3 = new Web3(Web3.givenProvider);
 const contractAddress = "0xCBE177C44Cff283701f82e69526677a896F1f4b1";
