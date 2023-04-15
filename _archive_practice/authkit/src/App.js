@@ -3,7 +3,8 @@ import {
   SafeAuthProvider,
   useSafeAppsSDK,
 } from '@gnosis.pm/safe-apps-react-sdk';
-import { Web3AuthAdapter } from '@web3auth/modal';
+import { Web3AuthAdapter } from "@web3auth/modal";
+import { Web3Auth } from "@web3auth/modal";
 import { OpenloginAdapter } from '@web3auth/openlogin-adapter';
 import Web3 from 'web3';
 import { ethers } from 'ethers';
