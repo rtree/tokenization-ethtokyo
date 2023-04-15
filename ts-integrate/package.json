@@ -16,6 +16,7 @@
     "@safe-global/safe-core-sdk-types": "^1.10.1",
     "@types/node": "^18.15.11",
     "dotenv": "^16.0.3",
+    "ethers": "^6.3.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4"
   }
