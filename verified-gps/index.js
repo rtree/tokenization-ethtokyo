@@ -45,13 +45,25 @@ async function main() {
     [param1, param2]
   )
 
+  const gasPrice = await web3.eth.getGasPrice();
+  const gasLimit = 300000;
+  const nonce = await web3.eth.getTransactionCount(senderAddress, 'latest');
+
   const safeTransactionData = {
+    from: senderAddress,
     to: contractAddress,
     data,
     value: '0',
+    safeTxGas: 100
   };
   
   const safeSdk = await Safe.create({ ethAdapter, safeAddress: safeAddress })
+  const options = {
+    from: senderAddress,
+    gas: 300000,
+    gasPrice: 10,
+    nonce: await web3.eth.getTransactionCount(senderAddress, 'latest')
+  };
   const safeTransaction = await safeSdk.createTransaction({ safeTransactionData })
 
   const safeTxHash = await safeSdk.getTransactionHash(safeTransaction)
