@@ -4,16 +4,22 @@ import dotenv from 'dotenv'
 import SafeApiKit from '@safe-global/api-kit'
 import Safe, { SafeFactory } from '@safe-global/protocol-kit'
 import { SafeTransactionDataPartial } from '@safe-global/safe-core-sdk-types'
+import PrivateKeyProvider from 'truffle-privatekey-provider';
 
 dotenv.config()
-const { INFURA_API_KEY } = process.env;
+const { INFURA_API_KEY, PRIVATE_KEY } = process.env;
 
 if (!INFURA_API_KEY) {
   throw new Error('INFURA_API_KEY is not defined in environment variables');
 }
-const provider     = new Web3.providers.HttpProvider(INFURA_API_KEY)
+if (!PRIVATE_KEY) {
+  throw new Error('PRIVATE_KEY is not defined in environment variables');
+}
+//const provider     = new Web3.providers.HttpProvider(INFURA_API_KEY)
+const provider = new PrivateKeyProvider(PRIVATE_KEY, `https://goerli.infura.io/v3/${INFURA_API_KEY}`);
 const web3         = new Web3(provider)
 const safeOwner    = '0x485A974140923524a74B0D72aF117852F31B412D'
+const senderAddress = '0x485A974140923524a74B0D72aF117852F31B412D'
 const safeAddress  = '0x0914566875dF1b7Fb6cb67c55058194D6a0616c3'
 
 const ethAdapter   = new Web3Adapter({
@@ -35,8 +41,8 @@ async function main() {
       name: 'set',
       type: 'function',
       inputs: [
-        { type: 'uint256', name: 'param1' },
-        { type: 'uint256', name: 'param2' },
+        { type: 'uint256', name: 'latitude' },
+        { type: 'uint256', name: 'longitude' },
       ],
     },
     [param1, param2]
@@ -48,13 +54,22 @@ async function main() {
     value: '0',
   };
 
-  const safeSdk = await Safe.create({ ethAdapter, safeAddress: safeOwner });
+  const safeSdk = await Safe.create({ ethAdapter, safeAddress: safeAddress });
   const safeTransaction = await safeSdk.createTransaction({ safeTransactionData });
-  // Sign the transaction
-  const signature = await safeSdk.signTransaction(safeTransaction);
-  // Submit the transaction
-  const txResponse = await safeSdk.executeTransaction(safeTransaction, [signature]);
-  console.log('Transaction submitted:', txResponse);
+
+  const safeTxHash = await safeSdk.getTransactionHash(safeTransaction);
+  const senderSignature = await safeSdk.signTransactionHash(safeTxHash);
+  const proposedTxResponse = await safeService.proposeTransaction({
+    safeAddress,
+    safeTransactionData: safeTransaction.data,
+    safeTxHash,
+    senderAddress,
+    senderSignature: senderSignature.data,
+    origin
+  });
+
+
+  console.log('Transaction proposed:', proposedTxResponse);
 }
 main().catch((error) => {
   console.error('An error occurred:', error);
