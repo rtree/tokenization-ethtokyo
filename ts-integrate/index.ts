@@ -15,12 +15,13 @@ if (!INFURA_API_KEY) {
 if (!PRIVATE_KEY) {
   throw new Error('PRIVATE_KEY is not defined in environment variables');
 }
-//const provider     = new Web3.providers.HttpProvider(INFURA_API_KEY)
-const provider = new PrivateKeyProvider(PRIVATE_KEY, `https://goerli.infura.io/v3/${INFURA_API_KEY}`);
+const provider = new PrivateKeyProvider(PRIVATE_KEY as string, `https://goerli.infura.io/v3/${INFURA_API_KEY}`);
 const web3         = new Web3(provider)
 const safeOwner    = '0x485A974140923524a74B0D72aF117852F31B412D'
 const senderAddress = '0x485A974140923524a74B0D72aF117852F31B412D'
 const safeAddress  = '0x0914566875dF1b7Fb6cb67c55058194D6a0616c3'
+//const provider     = new Web3.providers.HttpProvider(INFURA_API_KEY)
+//const provider = new PrivateKeyProvider(PRIVATE_KEY, `https://goerli.infura.io/v3/${INFURA_API_KEY}`);
 
 const ethAdapter   = new Web3Adapter({
   web3,
@@ -58,13 +59,15 @@ async function main() {
   const safeTransaction = await safeSdk.createTransaction({ safeTransactionData });
 
   const safeTxHash = await safeSdk.getTransactionHash(safeTransaction);
-  const senderSignature = await safeSdk.signTransactionHash(safeTxHash);
+  const signatureObject = web3.eth.accounts.sign(safeTxHash, PRIVATE_KEY);
+  const senderSignature = signatureObject.signature;
+  //const senderSignature = await safeSdk.signTransactionHash(safeTxHash);
   const proposedTxResponse = await safeService.proposeTransaction({
     safeAddress,
     safeTransactionData: safeTransaction.data,
     safeTxHash,
     senderAddress,
-    senderSignature: senderSignature.data,
+    senderSignature,
     origin
   });
 
