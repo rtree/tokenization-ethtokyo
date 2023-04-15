@@ -11,11 +11,11 @@ const { INFURA_API_KEY } = process.env;
 if (!INFURA_API_KEY) {
   throw new Error('INFURA_API_KEY is not defined in environment variables');
 }
-const provider     = new Web3.providers.HttpProvider(INFURA_API_KEY)
-const web3         = new Web3(provider)
-const safeOwner    = '0x485A974140923524a74B0D72aF117852F31B412D'
+const provider      = new Web3.providers.HttpProvider(INFURA_API_KEY)
+const web3          = new Web3(provider)
+const safeOwner     = '0x485A974140923524a74B0D72aF117852F31B412D'
 const senderAddress = '0x485A974140923524a74B0D72aF117852F31B412D'
-const safeAddress  = '0x0914566875dF1b7Fb6cb67c55058194D6a0616c3'
+const safeAddress   = '0x0914566875dF1b7Fb6cb67c55058194D6a0616c3'
 
 const ethAdapter   = new Web3Adapter({
   web3,
@@ -64,8 +64,7 @@ async function main() {
   });
 
   // Sign the transaction
-  const signature = await safeSdk.signTransaction(safeTransaction);
-
+  //const signature = await safeSdk.signTransaction(safeTransaction);
   // Propose the transaction
 
 
