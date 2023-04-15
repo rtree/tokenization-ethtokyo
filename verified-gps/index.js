@@ -38,32 +38,42 @@ async function main() {
       name: 'set',
       type: 'function',
       inputs: [
-        { type: 'uint256', name: 'latitude' },
-        { type: 'uint256', name: 'longitude' },
+        { type: 'int256', name: 'latitude' },
+        { type: 'int256', name: 'longitude' },
       ],
     },
     [param1, param2]
   )
 
+  /*
   const gasPrice = await web3.eth.getGasPrice();
-  const gasLimit = 300000;
+  const gasLimit = 600000;
   const nonce = await web3.eth.getTransactionCount(senderAddress, 'latest');
+  */
 
   const safeTransactionData = {
     from: senderAddress,
     to: contractAddress,
     data,
     value: '0',
-    safeTxGas: 100
+    safeTxGas: 80000,
+    operation: 0,
+    baseGas: 0,
+    gasPrice: 0,
+    gasToken: '0x0000000000000000000000000000000000000000',
+    refundReceiver: '0x0000000000000000000000000000000000000000',
   };
   
   const safeSdk = await Safe.create({ ethAdapter, safeAddress: safeAddress })
+  /*
   const options = {
     from: senderAddress,
-    gas: 300000,
-    gasPrice: 10,
+    gas: 900000,
+    gasPrice: 300,
     nonce: await web3.eth.getTransactionCount(senderAddress, 'latest')
   };
+  */
+
   const safeTransaction = await safeSdk.createTransaction({ safeTransactionData })
 
   const safeTxHash = await safeSdk.getTransactionHash(safeTransaction)
