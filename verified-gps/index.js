@@ -6,6 +6,89 @@ import { SafeTransactionDataPartial } from '@safe-global/safe-core-sdk-types'
 
 const txServiceUrl = 'https://safe-transaction-goerli.safe.global/'
 
+function displayLatLong(latitude, longitude) {
+  // Update the content of the HTML element with the retrieved data
+  document.getElementById('currentCoordinates').innerHTML = `Lat: ${latitude}, Long: ${longitude}`;
+}
+
+function getCurrentPosition() {
+  return new Promise((resolve, reject) => {
+    if (!navigator.geolocation) {
+      return reject(new Error('Geolocation is not supported by your browser.'));
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+
+        // Display the user's latitude and longitude
+        displayLatLong(latitude, longitude);
+
+        resolve({
+          latitude,
+          longitude,
+        });
+      },
+      (error) => {
+        reject(error);
+      }
+    );
+  });
+}
+async function getCoordinates() {
+  const contractAddress = '0xCBE177C44Cff283701f82e69526677a896F1f4b1';
+  const web3 = new Web3(window.ethereum);
+  
+  const contractAbi = [
+    {
+      "inputs": [
+        {
+          "internalType": "int256",
+          "name": "latitude",
+          "type": "int256"
+        },
+        {
+          "internalType": "int256",
+          "name": "longitude",
+          "type": "int256"
+        }
+      ],
+      "name": "set",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "get",
+      "outputs": [
+        {
+          "internalType": "int256",
+          "name": "latitude",
+          "type": "int256"
+        },
+        {
+          "internalType": "int256",
+          "name": "longitude",
+          "type": "int256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    }
+  ];
+
+  const contract = new web3.eth.Contract(contractAbi, contractAddress);
+  const coordinates = await contract.methods.get().call();
+  const [latitude, longitude] = [coordinates.latitude, coordinates.longitude];
+  console.log('Stored coordinates:', { latitude, longitude });
+
+  // Update the content of the HTML element with the retrieved data
+  document.getElementById('coordinates').innerHTML = `Lat: ${latitude}, Long: ${longitude}`;
+}
+
 async function main() {
   // Check if MetaMask is installed
   if (typeof window.ethereum === 'undefined') {
@@ -30,8 +113,14 @@ async function main() {
   const safeService = new SafeApiKit({ txServiceUrl, ethAdapter })
 
   const contractAddress = '0xCBE177C44Cff283701f82e69526677a896F1f4b1'
-  const param1 = '111111111'
-  const param2 = '1111111111'
+
+
+  //const param1 = '111111111'
+  //const param2 = '1111111111'
+  // Request user's geolocation
+  const { latitude, longitude } = await getCurrentPosition();
+  const param1 = Math.round(latitude * 1e7);
+  const param2 = Math.round(longitude * 1e7);
 
   const data = web3.eth.abi.encodeFunctionCall(
     {
@@ -89,10 +178,16 @@ async function main() {
 
   console.log('Transaction proposed:', proposedTxResponse)
 }
+
 document.getElementById('execute').addEventListener('click', () => {
   main().catch((error) => {
     console.error('An error occurred:', error)
   })
-})
+});
 
+document.getElementById('retrieve').addEventListener('click', () => {
+  getCoordinates().catch((error) => {
+    console.error('An error occurred:', error);
+  });
+});
 

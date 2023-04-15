@@ -3,11 +3,78 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Safe Transaction Example</title>
+  <title>Proof of Location</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 0.25rem;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    button {
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 1rem 0;
+      cursor: pointer;
+      border-radius: 4px;
+      transition-duration: 0.4s;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #currentCoordinates,
+    #coordinates {
+      background-color: white;
+      padding: 1rem;
+      border-radius: 4px;
+      box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+    }
+  </style>
 </head>
 <body>
-  <h1>Safe Transaction Example</h1>
-  <button id="execute">Execute Safe Transaction</button>
+  <h1>Proof of Location</h1>
+  <h2>Verify you are here, <br/></h2><h3>with a little help from your friend.</h3>
+  <div>
+    <button id="execute">Verify&nbsp;&nbsp;&nbsp;</button>
+    <span>Current coordinates:</span>
+    <div id="currentCoordinates"></div>
+  </div>
+  <div>
+    <button id="retrieve">get PoL</button>
+    <span>Stored coordinates:</span>
+    <div id="coordinates"></div>
+  </div>
   <script src="https://cdn.jsdelivr.net/npm/web3@1.6.0/dist/web3.min.js"></script>
   <script type="module" src="./index.js"></script>
 </body>
